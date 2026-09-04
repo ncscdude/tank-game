@@ -11,7 +11,6 @@ def save_game(player_name, hits, accuracy):
             writer.writerow(["Player", "Hits", "Accuracy"])
         writer.writerow([player_name, hits, f"{accuracy:.1f}"])
 
-
 def load_history():
     filename = "game_history.csv"
     if not os.path.exists(filename):
