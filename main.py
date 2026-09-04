@@ -1,4 +1,9 @@
-import
+import random
+from obstacles import get_next_obstacle
+from game_logic import check_hit
+from display import show_start, show_round, show_result, show_stats
+from file_handler import save_game
+
 
 def main():
     player_name = input("Enter your name: ")
@@ -17,4 +22,9 @@ def main():
             show_result("Miss!")
         show_round(round_num, wind, obstacle)
 
+    accuracy = (hits / rounds) * 100
+    save_game(player_name, hits, accuracy)
+    show_stats(player_name, hits, accuracy)
 
+if __name__ == "__main__":
+    main()
