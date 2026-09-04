@@ -112,20 +112,27 @@ def app():
             distance = (velocity ** 2 * np.sin(2 * np.radians(angle)) / 9.81) + (wind * 2)
 
             fig = draw_game_state(angle, velocity, wind, obstacle, distance, hit)
-            st.pyplot(fig)
 
-            st.write(f"Distance: {distance:.0f} units (Target: 100)")
+            st.session_state.last_fig = fig
+            st.session_state.last_distance = distance
+            st.session_state.last_hit = hit
 
-            if hit:
+        if "last_fig" in st.session_state:
+            st.pyplot(st.session_state.last_fig)
+            st.write(f"Distance: {st.session_state.last_distance:.0f} units (Target: 100)")
+
+            if st.session_state.last_hit:
                 st.session_state.hits += 1
                 st.success("Hit!")
             else:
                 st.error("Miss!")
 
-            st.session_state.used_obstacles.append(obstacle)
-            st.session_state.current_obstacle = None
-            st.session_state.round += 1
-            st.rerun()
+            if st.button("Next Round"):
+                st.session_state.used_obstacles.append(obstacle)
+                st.session_state.current_obstacle = None
+                st.session_state.round += 1
+                st.session_state.pop("last_fig", None)
+                st.rerun()
 
     elif st.session_state.player_name and st.session_state.round > 5:
         accuracy = (st.session_state.hits / 5) * 100
