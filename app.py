@@ -107,6 +107,10 @@ def app():
 
         st.write(f"**Obstacle:** {obstacle} | **Wind:** {wind} m/s")
 
+            # Show placeholder graph on first load
+        if "last_fig" not in st.session_state:
+            st.info("Adjust sliders and click Shoot!")
+
         if st.button("Shoot!"):
             hit = check_hit(angle, velocity, wind)
             distance = (velocity ** 2 * np.sin(2 * np.radians(angle)) / 9.81) + (wind * 2)
